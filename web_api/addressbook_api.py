@@ -11,6 +11,7 @@ class AddressBookAPI:
 
     def login(self, username, password):
         wd = self.wd
+        self.open_home_page()
         # Login
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").send_keys("\\undefined")
@@ -51,6 +52,11 @@ class AddressBookAPI:
         # submit form
         wd.find_element_by_name("submit").click()
 
+    def return_to_group_page(self):
+        wd = self.wd
+        # return to group page
+        wd.find_element_by_link_text("group page").click()
+
     def logout(self):
         wd = self.wd
         # logout
@@ -58,3 +64,9 @@ class AddressBookAPI:
 
     def destroy(self):
         self.wd.quit()
+
+    def delete_group_by_number(self, number):
+        wd = self.wd
+        checkboxes = wd.find_elements_by_name("selected[]")
+        checkboxes[number].click()
+        wd.find_element_by_name("delete").click()
