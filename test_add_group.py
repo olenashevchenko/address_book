@@ -19,7 +19,7 @@ class test_add_group(unittest.TestCase):
         self.login("admin", "secret")
         self.open_group_page()
         self.init_create_new_group()
-        self.fill_form()
+        self.fill_form("name", "header", "footer")
         self.submit_form()
         self.logout()
 
@@ -52,18 +52,18 @@ class test_add_group(unittest.TestCase):
         # init create new group
         wd.find_element_by_name("new").click()
 
-    def fill_form(self):
+    def fill_form(self, name, header, footer):
         wd = self.wd
         # fill forms
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys("name")
+        wd.find_element_by_name("group_name").send_keys(name)
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys("header")
+        wd.find_element_by_name("group_header").send_keys(header)
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys("footer")
+        wd.find_element_by_name("group_footer").send_keys(footer)
 
     def submit_form(self):
         wd = self.wd
