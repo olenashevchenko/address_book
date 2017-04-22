@@ -70,3 +70,7 @@ class AddressBookAPI:
         checkboxes = wd.find_elements_by_name("selected[]")
         checkboxes[number].click()
         wd.find_element_by_name("delete").click()
+
+    def message(self):
+        wd = self.wd
+        return wd.find_element_by_css_selector("div.msgbox").text
