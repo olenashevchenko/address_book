@@ -1,4 +1,8 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+
+
 class AddressBookAPI:
     def __init__(self):
         self.wd = webdriver.Chrome()
@@ -13,8 +17,6 @@ class AddressBookAPI:
         wd = self.wd
         self.open_home_page()
         # Login
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").send_keys("\\undefined")
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -37,20 +39,28 @@ class AddressBookAPI:
     def fill_form(self, group):
         wd = self.wd
         # fill forms
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        if group.name is not None:
+            wd.find_element_by_name("group_name").click()
+            wd.find_element_by_name("group_name").clear()
+            wd.find_element_by_name("group_name").send_keys(group.name)
+        if group.header is not None:
+            wd.find_element_by_name("group_header").click()
+            wd.find_element_by_name("group_header").clear()
+            wd.find_element_by_name("group_header").send_keys(group.header)
+        if group.footer is not None:
+            wd.find_element_by_name("group_footer").click()
+            wd.find_element_by_name("group_footer").clear()
+            wd.find_element_by_name("group_footer").send_keys(group.footer)
 
     def submit_form(self):
         wd = self.wd
         # submit form
         wd.find_element_by_name("submit").click()
+
+    def create_group(self, group):
+        self.init_create_new_group()
+        self.fill_form(group)
+        self.submit_form()
 
     def return_to_group_page(self):
         wd = self.wd
@@ -74,3 +84,15 @@ class AddressBookAPI:
     def message(self):
         wd = self.wd
         return wd.find_element_by_css_selector("div.msgbox").text
+
+    def is_element_present(self, By, locator):
+        wd = self.wd
+        try:
+            wd.find_element(By, locator)
+            return True
+        except NoSuchElementException:
+            return False
+
+    def is_group_present(self):
+        self.open_group_page()
+        self.is_element_present(By.NAME, "selected[]")
