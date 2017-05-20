@@ -1,0 +1,14 @@
+{
+  "web": {
+    "base_url": "http://localhost:8888/addressbook/group.php",
+    "username": "admin",
+    "password": "secret"
+  },
+  "db": {
+    "host": "localhost",
+    "port": 8889,
+    "user": "root",
+    "password": "root",
+    "db": "test"
+  }
+}

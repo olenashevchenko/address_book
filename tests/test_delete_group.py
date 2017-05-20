@@ -1,17 +1,14 @@
 import pytest
-from models.group.group import Group
+import random
 
-@pytest.fixture
-def init_group(app):
-    if not app.is_group_present():
-        test_group = Group(name="test")
-        app.create_group(test_group)
-
-
-def test_delete_group(app, init_login, init_group):
-    app.open_group_page()
-    app.delete_group_by_number(0)
-    #Verify message
-    assert "Group has been removed." in app.message()
-    app.return_to_group_page()
-    #TODO Deletion group from the list
+def test_delete_group(app, init_login, init_group, index, db):
+    app.group.open_group_page()
+    old_groups_list = db.get_group_list()
+    app.group.delete_by_number(index)
+    assert "Group has been removed." in app.find_message()
+    app.group.return_to_group_page()
+    # Verifying Deletion group in list
+    new_groups_list = db.get_group_list()
+    assert len(old_groups_list)-1 == len(new_groups_list)
+    old_groups_list.pop(index)
+    assert old_groups_list == new_groups_list
